@@ -40,13 +40,16 @@ public class PlayerController : MonoBehaviour
         inputZ = joystickManager.InputVertical();
         
     }
-
+    public bool CheckMovement()
+    {
+        return inputX != 0 || inputZ != 0;
+    }
     void Movement()
     {
         Vector3 targetVector = new Vector3 (inputX, 0 ,inputZ);
         Vector3 movementVector = MoveTowardTarget(targetVector);
         RotateTowardMovementVector(movementVector);
-        animator.SetBool("IsIdle", inputX == 0 && inputZ == 0);
+        animator.SetBool("IsIdle", !CheckMovement());
     }
 
     private Vector3 MoveTowardTarget(Vector3 targetVector)
