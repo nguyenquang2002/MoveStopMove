@@ -335,6 +335,7 @@ GameObject:
   - component: {fileID: 6994043987597233469}
   - component: {fileID: 6994043987597233470}
   - component: {fileID: 8296172669121300912}
+  - component: {fileID: 1119893507898032597}
   m_Layer: 0
   m_Name: Player
   m_TagString: Player
@@ -439,8 +440,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   weapon: {fileID: 850966177}
-  attackOffset: {fileID: 0}
   canAttack: 0
+  numberOfRays: 36
+--- !u!114 &1119893507898032597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1310047098049123384}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: da12c9df52b7df84d8267cc175ceeecd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1377784495082383713
 GameObject:
   m_ObjectHideFlags: 0
@@ -2525,6 +2538,18 @@ PrefabInstance:
     - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 30
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 30
       objectReference: {fileID: 0}
     - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
       propertyPath: m_LocalPosition.x

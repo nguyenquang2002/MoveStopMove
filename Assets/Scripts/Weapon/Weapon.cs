@@ -5,29 +5,37 @@ using UnityEngine;
 public class Weapon : MonoBehaviour
 {
     
-    [SerializeField] float speed;
-    [SerializeField] float rotationSpeed = 720f;
+    [SerializeField] float speed = 3f;
+    [SerializeField] float rotationSpeed = 540f;
     [SerializeField] Transform weaponParent;
     [SerializeField] Attack attack;
+    [SerializeField] GameObject character;
     private Rigidbody rb;
     private Vector3 oldPos;
     private Quaternion oldRot;
     private bool isReturning;
+    public float attackRange;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
         oldPos = transform.localPosition;
         oldRot = transform.localRotation;
-        weaponParent = transform.parent;
+        
+        
+        
         isReturning = false;
-        attack = gameObject.GetComponentInParent<Attack>();
     }
 
     // Start is called before the first frame update
     void Start()
     {
-        
+        weaponParent = transform.parent;
+        attack = gameObject.GetComponentInParent<Attack>();
+        character = attack.gameObject;
+        rb.isKinematic = true;
+        rb.useGravity = false;
+        attackRange = attack.Range();
     }
 
     // Update is called once per frame
@@ -39,16 +47,20 @@ public class Weapon : MonoBehaviour
     public void WeaponAttack(Vector3 shootDir)
     {
         rb.transform.parent = null;
-        StartCoroutine(MoveWeapon(shootDir,oldPos));
+        StartCoroutine(MoveWeapon(shootDir));
     }
 
-    private IEnumerator MoveWeapon(Vector3 targetPosition, Vector3 oldPos)
+    private IEnumerator MoveWeapon(Vector3 targetPosition)
     {
         Vector3 tempPos = transform.position;
         Vector3 direction = (targetPosition - tempPos).normalized;
-        
-        while (Vector3.Distance(transform.position, tempPos) < 4.25f && !isReturning)
+
+        rb.isKinematic = false;
+        rb.velocity = Vector3.zero;
+        //rb.AddForce(direction * speed, ForceMode.Impulse);
+        while (Vector3.Distance(transform.position, tempPos) < attackRange && !isReturning)
         {
+
             transform.position += direction * speed * Time.deltaTime;
             transform.Rotate(0, rotationSpeed * Time.deltaTime, 0, Space.World);
             yield return null;
@@ -61,8 +73,14 @@ public class Weapon : MonoBehaviour
     {
         if (other.CompareTag("Attackable"))
         {
+            if(other.GetComponent<StateController>() != null && other.gameObject != character)
+            {
+                other.GetComponent<StateController>().Death();
+                attack.Kill();
+                attackRange = attack.Range();
+            }
+
             isReturning = true;
-            
             
         }
     }
@@ -70,6 +88,7 @@ public class Weapon : MonoBehaviour
     public void ResetWeapon()
     {
         isReturning = false;
+        rb.isKinematic = true;
         rb.transform.parent = weaponParent;
         transform.localPosition = oldPos;
         transform.localRotation = oldRot;
