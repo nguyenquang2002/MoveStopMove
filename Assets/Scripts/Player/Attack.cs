@@ -6,14 +6,13 @@ public class Attack : MonoBehaviour
 {
 
     private SphereCollider attackRange;
-    private GameObject weapon;
+    [SerializeField] GameObject weapon;
     public bool canAttack;
 
     private void Awake()
     {
         attackRange = gameObject.GetComponentInChildren<SphereCollider>();
-        Weapon weaponScript = gameObject.GetComponentInChildren<Weapon>();
-        weapon = weaponScript.gameObject;
+        
         canAttack = true;
     }
     // Start is called before the first frame update
@@ -35,12 +34,12 @@ public class Attack : MonoBehaviour
             if(gameObject.GetComponent<PlayerController>() != null && !gameObject.GetComponent<PlayerController>().CheckMovement())
             {
                 
-                Vector3 tempPosition = other.transform.position;
+                Vector3 tempPosition = other.transform.position + new Vector3(0, 1f, 0);
                 transform.LookAt(tempPosition);
                 if (canAttack)
                 {
-                    GameObject weaponObj = Instantiate(weapon, transform.position, Quaternion.Euler(0, 0, 0));
-                    weapon.GetComponent<Weapon>().WeaponAttack(tempPosition);
+                    
+                    weapon.GetComponentInChildren<Weapon>().WeaponAttack(tempPosition);
                     canAttack = false;
                 }
 
