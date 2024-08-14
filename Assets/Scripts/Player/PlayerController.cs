@@ -9,17 +9,17 @@ public class PlayerController : MonoBehaviour
     [SerializeField] float rotationSpeed = 30.0f;
 
     private JoystickManager joystickManager;
+    private StateController stateController;
     private Rigidbody rb;
     private SphereCollider attackRange;
-    private Animator animator;
     private float inputX, inputZ;
 
     private void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        animator = GetComponent<Animator>();
         joystickManager = GameObject.Find("Joystick").GetComponent<JoystickManager>();
         attackRange = gameObject.GetComponentInChildren<SphereCollider>();
+        stateController = GetComponent<StateController>();
     }
     // Start is called before the first frame update
     void Start()
@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
         Vector3 targetVector = new Vector3 (inputX, 0 ,inputZ);
         Vector3 movementVector = MoveTowardTarget(targetVector);
         RotateTowardMovementVector(movementVector);
-        animator.SetBool("IsIdle", !CheckMovement());
+        stateController.Idle(!CheckMovement());
     }
 
     private Vector3 MoveTowardTarget(Vector3 targetVector)

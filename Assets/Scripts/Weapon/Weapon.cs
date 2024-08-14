@@ -11,7 +11,7 @@ public class Weapon : MonoBehaviour
     [SerializeField] Attack attack;
     [SerializeField] GameObject character;
     private Rigidbody rb;
-    private Vector3 oldPos;
+    private Vector3 oldPos,oldScale;
     private Quaternion oldRot;
     private bool isReturning;
     public float attackRange;
@@ -21,9 +21,9 @@ public class Weapon : MonoBehaviour
         rb = GetComponent<Rigidbody>();
         oldPos = transform.localPosition;
         oldRot = transform.localRotation;
-        
-        
-        
+        oldScale = transform.localScale;
+
+
         isReturning = false;
     }
 
@@ -78,6 +78,7 @@ public class Weapon : MonoBehaviour
                 other.GetComponent<StateController>().Death();
                 attack.Kill();
                 attackRange = attack.Range();
+                gameObject.transform.localScale += oldScale * attack.growPercent / 100;
             }
 
             isReturning = true;

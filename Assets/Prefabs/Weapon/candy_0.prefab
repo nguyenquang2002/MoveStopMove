@@ -129,6 +129,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4e2bf34287bb1344eb62f2dcd60c11d4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 3
+  speed: 4
   rotationSpeed: 540
   weaponParent: {fileID: 0}
+  attack: {fileID: 0}
+  character: {fileID: 0}
+  attackRange: 0

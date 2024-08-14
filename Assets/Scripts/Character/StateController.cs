@@ -36,6 +36,11 @@ public class StateController : MonoBehaviour
         StartCoroutine(DeathAnimate());
     }
 
+    public void Idle(bool isIdle)
+    {
+        animator.SetBool("IsIdle", isIdle);
+    }
+
     IEnumerator DeathAnimate()
     {
         animator.SetBool("IsDead", true);
@@ -43,4 +48,5 @@ public class StateController : MonoBehaviour
         yield return new WaitForSeconds(1.0f);
         Destroy(gameObject);
     }
+
 }
