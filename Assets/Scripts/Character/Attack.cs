@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class Attack : MonoBehaviour
@@ -10,11 +11,13 @@ public class Attack : MonoBehaviour
 
     public float growPercent = 10f;
     [SerializeField] GameObject weapon;
+    [SerializeField] TextMeshProUGUI killCountText;
     public bool canAttack;
     private Quaternion oldRos;
     private Vector3 oldScale;
     public int numberOfRays = 36;
     public int killCount = 0;
+    private CameraFollow cam;
 
     private void Awake()
     {
@@ -27,7 +30,7 @@ public class Attack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        Debug.Log(Range());
+        cam = GameObject.Find("Main Camera").GetComponent<CameraFollow>();
     }
 
     // Update is called once per frame
@@ -36,13 +39,21 @@ public class Attack : MonoBehaviour
         CheckEnemy();
     }
 
-    
+    private void DisplayKillCount()
+    {
+        killCountText.text = killCount.ToString();
+    }
 
     
     public void Kill()
     {
         killCount++;
+        DisplayKillCount();
         gameObject.transform.localScale += oldScale * growPercent / 100;
+        if (gameObject.GetComponent<PlayerController>() != null )
+        {
+            cam.IncreaseOffset(gameObject.transform.localScale.y);
+        }
 
         if (attackRange != null)
         {
@@ -110,16 +121,16 @@ public class Attack : MonoBehaviour
             {
                 if (!gameObject.GetComponent<PlayerController>().CheckMovement())
                 {
-                    if (hit.CompareTag("Attackable"))
+                    if (hit.CompareTag("Attackable") && hit.gameObject != gameObject)
                     {
-                        Vector3 tempPosition = hit.transform.position + new Vector3(0, 1f, 0);
+                        Vector3 tempPosition = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
                         transform.LookAt(tempPosition);
                         attackRange.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
                         if (canAttack && weapon.GetComponentInChildren<Weapon>() != null)
                         {
                             StartCoroutine(AttackAction(tempPosition));
-                            Debug.Log(range);
+                            
                         }
                     }
                 }
@@ -128,21 +139,44 @@ public class Attack : MonoBehaviour
                     attackRange.gameObject.transform.localRotation = oldRos;
                     canAttack = true;
                 }
+
             }
         }
     }
 
+    public void EnemyCheckAttackable()
+    {
+        float range = Range();
+        Collider[] hits = Physics.OverlapSphere(transform.position, range);
+        foreach (var hit in hits)
+        {
+            if(gameObject.GetComponent<EnemyController>() != null)
+            {
+                if (hit.CompareTag("Attackable") && hit.gameObject != gameObject)
+                {
+                    Vector3 tempPosition = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+                    transform.LookAt(tempPosition);
+                    attackRange.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+
+                    bool enemyAttack = Random.value > 0.25f;
+                    if (canAttack)
+                    {
+                        StartCoroutine(AttackAction(tempPosition));
+                    }
+                }
+            }
+        }
+        
+    }
+    
     IEnumerator AttackAction(Vector3 tempPosition)
     {
         anim.SetBool("IsAttack", true);
         anim.SetBool("IsIdle", false);
         yield return new WaitForSeconds(0.25f);
-        if (gameObject.GetComponent<PlayerController>().CheckMovement())
-        {
-            anim.SetBool("IsAttack", false);
-        }
         if(weapon.GetComponentInChildren<Weapon>() != null)
         {
+            Debug.Log(weapon.GetComponentInChildren<Weapon>());
             weapon.GetComponentInChildren<Weapon>().WeaponAttack(tempPosition);
         }
         canAttack = false;

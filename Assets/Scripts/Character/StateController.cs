@@ -46,7 +46,7 @@ public class StateController : MonoBehaviour
         animator.SetBool("IsDead", true);
         animator.SetBool("IsIdle", false);
         yield return new WaitForSeconds(1.0f);
-        Destroy(gameObject);
+        gameObject.SetActive(false);
     }
 
 }

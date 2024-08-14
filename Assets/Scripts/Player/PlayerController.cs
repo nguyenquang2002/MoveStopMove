@@ -13,6 +13,7 @@ public class PlayerController : MonoBehaviour
     private Rigidbody rb;
     private SphereCollider attackRange;
     private float inputX, inputZ;
+    private bool isDeath = false;
 
     private void Awake()
     {
@@ -30,6 +31,7 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        if (isDeath) return;
         GetInput();
         Movement();
     }
@@ -50,6 +52,11 @@ public class PlayerController : MonoBehaviour
         Vector3 movementVector = MoveTowardTarget(targetVector);
         RotateTowardMovementVector(movementVector);
         stateController.Idle(!CheckMovement());
+    }
+
+    public void SetDeath(bool death)
+    {
+        isDeath = death;
     }
 
     private Vector3 MoveTowardTarget(Vector3 targetVector)

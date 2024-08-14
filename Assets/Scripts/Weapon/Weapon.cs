@@ -47,6 +47,7 @@ public class Weapon : MonoBehaviour
     public void WeaponAttack(Vector3 shootDir)
     {
         rb.transform.parent = null;
+        Debug.Log(attackRange);
         StartCoroutine(MoveWeapon(shootDir));
     }
 
@@ -56,7 +57,7 @@ public class Weapon : MonoBehaviour
         Vector3 direction = (targetPosition - tempPos).normalized;
 
         rb.isKinematic = false;
-        rb.velocity = Vector3.zero;
+        //rb.velocity = Vector3.zero;
         //rb.AddForce(direction * speed, ForceMode.Impulse);
         while (Vector3.Distance(transform.position, tempPos) < attackRange && !isReturning)
         {
@@ -71,11 +72,15 @@ public class Weapon : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Attackable"))
+        if (other.CompareTag("Attackable") && other.gameObject != character)
         {
-            if(other.GetComponent<StateController>() != null && other.gameObject != character)
+            if(other.GetComponent<StateController>() != null)
             {
                 other.GetComponent<StateController>().Death();
+                if (other.GetComponent<PlayerController>() != null)
+                {
+                    other.GetComponent<PlayerController>().SetDeath(true);
+                }
                 attack.Kill();
                 attackRange = attack.Range();
                 gameObject.transform.localScale += oldScale * attack.growPercent / 100;
