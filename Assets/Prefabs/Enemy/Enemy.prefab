@@ -953,6 +953,7 @@ MonoBehaviour:
   growPercent: 10
   weapon: {fileID: 6870658597898962807}
   killCountText: {fileID: 7775611000894319702}
+  nameText: {fileID: 7775611000618989041}
   canAttack: 0
   numberOfRays: 36
   killCount: 0
@@ -1015,7 +1016,7 @@ GameObject:
   - component: {fileID: 8605764917765041247}
   - component: {fileID: 6349967350627934207}
   m_Layer: 7
-  m_Name: initialShadingGroup1
+  m_Name: Skins
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1939,7 +1940,7 @@ SphereCollider:
   m_GameObject: {fileID: 6870658597687357615}
   m_Material: {fileID: 0}
   m_IsTrigger: 1
-  m_Enabled: 1
+  m_Enabled: 0
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
@@ -2664,6 +2665,10 @@ PrefabInstance:
       propertyPath: m_fontColor32.rgba
       value: 4286809991
       objectReference: {fileID: 0}
+    - target: {fileID: 3797095879030052743, guid: d32ec73b874e36f41a91b0826c6b775a, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0.7
+      objectReference: {fileID: 0}
     - target: {fileID: 3797095879101127976, guid: d32ec73b874e36f41a91b0826c6b775a, type: 3}
       propertyPath: m_Name
       value: InfoUI
@@ -2802,7 +2807,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 8303282630277749843, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
       propertyPath: m_Name
-      value: candy_0 (1)
+      value: candy_01
       objectReference: {fileID: 0}
     - target: {fileID: 8303282630277749843, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
       propertyPath: m_Layer
@@ -2811,6 +2816,18 @@ PrefabInstance:
     - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
       propertyPath: m_RootOrder
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 40
+      objectReference: {fileID: 0}
+    - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 40
       objectReference: {fileID: 0}
     - target: {fileID: 8303282630278234227, guid: f6b69ef3b82f64e4da2be965015e8942, type: 3}
       propertyPath: m_LocalPosition.x

@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 8303282630277749843}
   m_LocalRotation: {x: 0, y: -0, z: 0.7071068, w: -0.7071068}
   m_LocalPosition: {x: -0, y: 0, z: 0.05}
-  m_LocalScale: {x: 20, y: 20, z: 20}
+  m_LocalScale: {x: 40, y: 40, z: 40}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -130,8 +130,11 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
+  isRotate: 1
+  isMultiple: 0
   rotationSpeed: 540
   weaponParent: {fileID: 0}
   attack: {fileID: 0}
   character: {fileID: 0}
+  isClone: 0
   attackRange: 0

@@ -19,18 +19,7 @@ public class StateController : MonoBehaviour
     {
         animator = GetComponent<Animator>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
-
+    
     public void Death()
     {
         StartCoroutine(DeathAnimate());
@@ -45,8 +34,23 @@ public class StateController : MonoBehaviour
     {
         animator.SetBool("IsDead", true);
         animator.SetBool("IsIdle", false);
+        if(gameObject.GetComponent<Rigidbody>() != null )
+        {
+            gameObject.GetComponent<Rigidbody>().useGravity = false;
+        }
+        if (gameObject.GetComponent<EnemyController>() != null)
+        {
+            gameObject.GetComponent<EnemyController>().CancelPatrol();
+        }
         yield return new WaitForSeconds(1.0f);
-        gameObject.SetActive(false);
+        if(gameObject.GetComponent<EnemyController>() != null )
+        {
+            gameObject.GetComponent<EnemyController>().enemyPool.Release(gameObject.GetComponent<EnemyController>());
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 
 }

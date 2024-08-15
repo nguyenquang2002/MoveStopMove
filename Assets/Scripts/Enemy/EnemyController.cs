@@ -3,11 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Pool;
 
 public class EnemyController : MonoBehaviour
 {
 
-    private float randAction;
+    private bool randAction;
     [SerializeField] float range = 8f;
     [SerializeField] TextMeshProUGUI nameText;
     private Transform centrePoint;
@@ -16,6 +17,8 @@ public class EnemyController : MonoBehaviour
     private bool isMoving = false;
     private bool isCoroutineReady = true;
     private StateController stateController;
+
+    public IObjectPool<EnemyController> enemyPool;
     
     // Start is called before the first frame update
     void Start()
@@ -36,6 +39,39 @@ public class EnemyController : MonoBehaviour
         {
             StartCoroutine(RandomAction());
         }
+    }
+
+    public void SetPool(IObjectPool<EnemyController> pool)
+    {
+        enemyPool = pool;
+    }
+
+    public void ResetOnRelease()
+    {
+        if (gameObject.GetComponent<Attack>() != null)
+        {
+            gameObject.GetComponent<Attack>().ResetKill();
+        }
+    }
+
+    public void WhenOnGet(Vector3 randomPoint, string enemyName, Material skin, Material pant)
+    {
+        if (gameObject.GetComponent<Attack>() != null)
+        {
+            gameObject.GetComponent<Attack>().canAttack = true;
+            gameObject.GetComponent<Attack>().ChangeNameAndMaterial(enemyName,skin,pant);
+        }
+        
+        
+        if(rb != null)
+        {
+            rb.useGravity = true;
+        }
+        if(gameObject.GetComponent<Collider>() != null)
+        {
+            gameObject.GetComponent<Collider>().enabled = true;
+        }
+        transform.position = randomPoint;
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
@@ -64,11 +100,15 @@ public class EnemyController : MonoBehaviour
             }
         }
     }
+    public void CancelPatrol()
+    {
+        agent.SetDestination(transform.position);
+    }
     IEnumerator RandomAction()
     {
         isCoroutineReady = false;
-        randAction = Random.Range(0f, 5f);
-        if (randAction > 2f)
+        randAction = Random.value > 0.5f;
+        if (randAction)
         {
             Patrol();
             if (gameObject.GetComponent<Attack>() != null)
@@ -78,7 +118,7 @@ public class EnemyController : MonoBehaviour
         }
         else
         {
-            if(gameObject.GetComponent<Attack>() != null)
+            if(gameObject.GetComponent<Attack>() != null && !isMoving)
             {
                 gameObject.GetComponent<Attack>().EnemyCheckAttackable();
             }

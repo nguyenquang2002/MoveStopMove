@@ -22,12 +22,7 @@ public class PlayerController : MonoBehaviour
         attackRange = gameObject.GetComponentInChildren<SphereCollider>();
         stateController = GetComponent<StateController>();
     }
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
-
+    
     // Update is called once per frame
     void Update()
     {

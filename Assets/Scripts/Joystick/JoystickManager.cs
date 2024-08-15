@@ -16,11 +16,6 @@ public class JoystickManager : MonoBehaviour, IDragHandler, IPointerDownHandler,
         imgJoystickHandle = transform.GetChild(0).GetChild(0).GetComponent<Image>();
     }
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
     public void OnDrag(PointerEventData eventData)
     {
         if(RectTransformUtility.ScreenPointToLocalPointInRectangle(
