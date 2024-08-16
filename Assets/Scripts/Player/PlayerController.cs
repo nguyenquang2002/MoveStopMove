@@ -14,6 +14,7 @@ public class PlayerController : MonoBehaviour
     private SphereCollider attackRange;
     private float inputX, inputZ;
     private bool isDeath = false;
+    private GameObject killer;
 
     private void Awake()
     {
@@ -53,6 +54,10 @@ public class PlayerController : MonoBehaviour
     {
         isDeath = death;
     }
+    public bool IsDeath()
+    {
+        return isDeath;
+    }
 
     private Vector3 MoveTowardTarget(Vector3 targetVector)
     {
@@ -71,5 +76,14 @@ public class PlayerController : MonoBehaviour
         }
         var rotation = Quaternion.LookRotation(movementDirection);
         transform.rotation = Quaternion.RotateTowards(transform.rotation, rotation, rotationSpeed);
+    }
+
+    public void SetKillBy(GameObject enemy)
+    {
+        killer = enemy;
+    }
+    public GameObject GetKillBy()
+    {
+        return killer;
     }
 }

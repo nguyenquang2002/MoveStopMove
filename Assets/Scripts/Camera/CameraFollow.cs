@@ -17,7 +17,7 @@ public class CameraFollow : MonoBehaviour
     void Update()
     {
         transform.position = new Vector3(player.position.x, 0, player.position.z) + offset;
-        transform.rotation = Quaternion.Euler(45,0,0);
+        //transform.rotation = Quaternion.Euler(50,0,0);
         //transform.LookAt(player.position);
     }
     public void IncreaseOffset(float playerScale)

@@ -17,6 +17,8 @@ public class EnemyController : MonoBehaviour
     private bool isMoving = false;
     private bool isCoroutineReady = true;
     private StateController stateController;
+    private Attack attack;
+    private Color baseColor;
 
     public IObjectPool<EnemyController> enemyPool;
     
@@ -25,9 +27,14 @@ public class EnemyController : MonoBehaviour
     {
         agent = GetComponent<NavMeshAgent>();
         rb = GetComponent<Rigidbody>();
+        attack = GetComponent<Attack>();
         stateController = GetComponent<StateController>();
         centrePoint = transform;
         nameText.text = gameObject.name;
+        if (transform.Find("Skins").GetComponent<SkinnedMeshRenderer>() != null)
+        {
+            baseColor = transform.Find("Skins").GetComponent<SkinnedMeshRenderer>().material.color;
+        }
         NonDisplayAim();
     }
 
@@ -61,9 +68,9 @@ public class EnemyController : MonoBehaviour
         {
             gameObject.GetComponent<Attack>().canAttack = true;
             gameObject.GetComponent<Attack>().ChangeNameAndMaterial(enemyName,skin,pant);
+            baseColor = skin.color;
         }
-        
-        
+
         if(rb != null)
         {
             rb.useGravity = true;
@@ -75,6 +82,11 @@ public class EnemyController : MonoBehaviour
         transform.position = randomPoint;
     }
 
+    public Color GetColor()
+    {
+        return baseColor;
+    }
+    
     public void DisplayAim()
     {
         if(transform.Find("Aim").gameObject != null)
@@ -139,10 +151,8 @@ public class EnemyController : MonoBehaviour
             {
                 gameObject.GetComponent<Attack>().EnemyCheckAttackable();
             }
-            
-
         }
-        yield return new WaitForSeconds(2f);
+        yield return new WaitForSeconds(1f);
         isCoroutineReady = true;
     }
 }

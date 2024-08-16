@@ -86,19 +86,23 @@ public class Attack : MonoBehaviour
     public void ChangeNameAndMaterial(string name, Material skin, Material pant)
     {
         gameObject.name = name;
-        if(rendSkin != null)
-        {
-            rendSkin.material = skin;
-        }
-        if(rendPant != null)
-        {
-            rendPant.material = pant;
-        }
+        ChangeMaterial(skin, pant);
         if (killCountText.transform.parent.GetComponent<Image>() != null)
         {
             killCountText.transform.parent.GetComponent<Image>().color = skin.color;
         }
         nameText.color = skin.color;
+    }
+    public void ChangeMaterial(Material skin, Material pant)
+    {
+        if (rendSkin != null)
+        {
+            rendSkin.material = skin;
+        }
+        if (rendPant != null)
+        {
+            rendPant.material = pant;
+        }
     }
 
     public float Range()
@@ -228,13 +232,13 @@ public class Attack : MonoBehaviour
     {
         anim.SetBool("IsAttack", true);
         anim.SetBool("IsIdle", false);
-        yield return new WaitForSeconds(0.35f);
+        yield return new WaitForSeconds(0.25f);
         if(weapon.GetComponentInChildren<Weapon>() != null)
         {
             weapon.GetComponentInChildren<Weapon>().WeaponAttack(tempPosition);
         }
         canAttack = false;
-        yield return new WaitForSeconds(0.15f);
+        yield return new WaitForSeconds(0.25f);
         anim.SetBool("IsAttack", false);
     }
 }

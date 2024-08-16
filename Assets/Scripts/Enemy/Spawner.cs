@@ -48,7 +48,7 @@ public class Spawner : MonoBehaviour
             randomPosition = new Vector3(Random.Range(-areaRange, areaRange) / 2, 0.15f, Random.Range(-areaRange, areaRange) / 2);
         } while (Vector3.Distance(randomPosition, playerAttack.transform.position) < playerAttack.Range() + 1);
         Material randomSkin = listSkin[Random.Range(0, listSkin.Length)];
-        EnemyName enemyName = (EnemyName)Random.Range(-1, 4) + 1;
+        EnemyName enemyName = (EnemyName)Random.Range(-1, 3) + 1;
         enemy.WhenOnGet(randomPosition, enemyName.ToString(), randomSkin, randomSkin);
         enemyCount++;
         enemy.gameObject.SetActive(true);
@@ -63,9 +63,9 @@ public class Spawner : MonoBehaviour
 
     private void DisplayAlive()
     {
-        if (GameObject.Find("Canvas").GetComponent<CanvasInfo>() != null)
+        if (GameObject.Find("Canvas").GetComponent<GameManager>() != null)
         {
-            GameObject.Find("Canvas").GetComponent<CanvasInfo>().DisplayAliveCount(alive);
+            GameObject.Find("Canvas").GetComponent<GameManager>().DisplayAliveCount(alive);
         }
     }
 

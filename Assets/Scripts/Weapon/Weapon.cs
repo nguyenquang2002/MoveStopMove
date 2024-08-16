@@ -57,10 +57,17 @@ public class Weapon : MonoBehaviour
         Vector3 target = new Vector3(targetPosition.x, targetPosition.y + 0.5f, targetPosition.z);
         Vector3 direction = (target - tempPos).normalized;
 
+        transform.position += direction * 0.1f;
+
         rb.isKinematic = false;
         //rb.velocity = Vector3.zero;
         //rb.AddForce(direction * speed, ForceMode.Impulse);
         bool hasSpwanClone = false;
+        if (!isRotate)
+        {
+            Quaternion targetRotation = Quaternion.LookRotation(direction) * Quaternion.Euler(90, -90, 90);
+            transform.rotation = targetRotation;
+        }
         while (Vector3.Distance(transform.position, tempPos) < attackRange && !isReturning)
         {
             transform.position += direction * speed * Time.deltaTime;
@@ -70,8 +77,8 @@ public class Weapon : MonoBehaviour
             }
             if(isMultiple && !hasSpwanClone)
             {
-                Vector3 leftDirection = Quaternion.Euler(0, -35, 0) * direction;
-                Vector3 rightDirection = Quaternion.Euler(0, 35, 0) * direction;
+                Vector3 leftDirection = Quaternion.Euler(0, -40, 0) * direction;
+                Vector3 rightDirection = Quaternion.Euler(0, 40, 0) * direction;
 
                 MultipleWeapon(leftDirection);
                 MultipleWeapon(rightDirection);
@@ -100,14 +107,17 @@ public class Weapon : MonoBehaviour
     {
         if (other.CompareTag("Attackable") && other.gameObject != character)
         {
-            if(other.GetComponent<StateController>() != null)
+            StateController otherState = other.GetComponent<StateController>();
+            if(otherState != null)
             {
                 other.enabled = false;
-                other.GetComponent<StateController>().Death();
-                if (other.GetComponent<PlayerController>() != null)
+                PlayerController otherPlayerControll = other.GetComponent<PlayerController>();
+                if (otherPlayerControll != null)
                 {
-                    other.GetComponent<PlayerController>().SetDeath(true);
+                    otherPlayerControll.SetDeath(true);
+                    otherPlayerControll.SetKillBy(character);
                 }
+                otherState.Death();
                 attack.Kill();
                 attackRange = attack.Range();
                 gameObject.transform.localScale += oldScale * attack.growPercent / 100;

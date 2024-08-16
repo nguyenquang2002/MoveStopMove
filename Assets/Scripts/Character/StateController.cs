@@ -15,14 +15,43 @@ public class StateController : MonoBehaviour
         Dead
     }
     private Animator animator;
+    private Attack attack;
+    private Rigidbody rb;
+    private PlayerController playerController;
+    private EnemyController enemyController;
+    private GameManager uiCanvas;
+    private Spawner spawner;
+    [SerializeField] Material deathMaterial;
     private void Awake()
     {
         animator = GetComponent<Animator>();
+        attack = GetComponent<Attack>();
+        rb = GetComponent<Rigidbody>();
+        playerController = GetComponent<PlayerController>();
+        enemyController = GetComponent<EnemyController>();
+        spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
+        uiCanvas = GameObject.Find("Canvas").GetComponent<GameManager>();
     }
-    
+
+    private void Update()
+    {
+        CheckWinCondition();
+    }
+
     public void Death()
     {
         StartCoroutine(DeathAnimate());
+    }
+
+    public void CheckWinCondition()
+    {
+        if(spawner.GetAlive() == 1)
+        {
+            if (playerController != null && !playerController.IsDeath())
+            {
+                uiCanvas.SetVictory();
+            }
+        }
     }
 
     public void Idle(bool isIdle)
@@ -34,22 +63,38 @@ public class StateController : MonoBehaviour
     {
         animator.SetBool("IsDead", true);
         animator.SetBool("IsIdle", false);
-        if(gameObject.GetComponent<Rigidbody>() != null )
+        if(rb != null )
         {
-            gameObject.GetComponent<Rigidbody>().useGravity = false;
+            rb.useGravity = false;
         }
-        if (gameObject.GetComponent<EnemyController>() != null)
+        if (enemyController != null)
         {
-            gameObject.GetComponent<EnemyController>().CancelPatrol();
+            enemyController.CancelPatrol();
         }
-        if (GameObject.Find("Spawner").GetComponent<Spawner>() != null)
+        if (playerController != null && playerController.GetKillBy() != null)
         {
-            GameObject.Find("Spawner").GetComponent<Spawner>().ReduceAlive();
+            uiCanvas.SetKillerText(playerController.GetKillBy());
+        }
+        if (spawner != null)
+        {
+            if (playerController != null)
+            {
+                uiCanvas.SetRanking(spawner.GetAlive());
+            }
+            spawner.ReduceAlive();
+        }
+        if(attack != null)
+        {
+            attack.ChangeMaterial(deathMaterial, deathMaterial);
         }
         yield return new WaitForSeconds(1.0f);
-        if(gameObject.GetComponent<EnemyController>() != null )
+        if (playerController != null)
         {
-            gameObject.GetComponent<EnemyController>().enemyPool.Release(gameObject.GetComponent<EnemyController>());
+            uiCanvas.SetGameOver();
+        }
+        if(enemyController != null )
+        {
+            enemyController.enemyPool.Release(gameObject.GetComponent<EnemyController>());
         }
         else
         {
