@@ -9,6 +9,8 @@ public class Attack : MonoBehaviour
 {
 
     private SphereCollider attackRange;
+    private Collider previousNearestEnemy = null;
+    private PlayerController playerController;
     private Animator anim;
     private SkinnedMeshRenderer rendSkin, rendPant;
 
@@ -29,6 +31,7 @@ public class Attack : MonoBehaviour
         canAttack = true;
         oldRos = transform.localRotation;
         oldScale = transform.localScale;
+        playerController = gameObject.GetComponent<PlayerController>();
         rendSkin = transform.Find("Skins").GetComponent<SkinnedMeshRenderer>();
         rendPant = transform.Find("Pants").GetComponent<SkinnedMeshRenderer>();
     }
@@ -42,7 +45,10 @@ public class Attack : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        CheckEnemy();
+        if(playerController != null)
+        {
+            CheckEnemy();
+        }
     }
 
     private void DisplayKillCount()
@@ -56,7 +62,7 @@ public class Attack : MonoBehaviour
         killCount++;
         DisplayKillCount();
         gameObject.transform.localScale += oldScale * growPercent / 100;
-        if (gameObject.GetComponent<PlayerController>() != null )
+        if (playerController != null )
         {
             cam.IncreaseOffset(gameObject.transform.localScale.y);
         }
@@ -107,17 +113,17 @@ public class Attack : MonoBehaviour
         //{
         //    float angle = i * 360f / numberOfRays;
         //    Vector3 direction = Quaternion.Euler(0, angle, 0) * Vector3.forward;
-            
+
         //    RaycastHit hit;
         //    float range = Range();
         //    Debug.DrawRay(transform.position, direction * range, Color.red);
-            
+
         //    if (Physics.Raycast(transform.position, direction, out hit, range))
         //    {
-                
-        //        if (gameObject.GetComponent<PlayerController>() != null)
+
+        //        if (playerController != null)
         //        {
-        //            if (!gameObject.GetComponent<PlayerController>().CheckMovement())
+        //            if (!playerController.CheckMovement())
         //            {
         //                if (hit.collider.CompareTag("Attackable"))
         //                {
@@ -162,17 +168,27 @@ public class Attack : MonoBehaviour
             }
         }
 
-        if (gameObject.GetComponent<PlayerController>() != null && nearestEnemy != null)
+        if (previousNearestEnemy != null && previousNearestEnemy.GetComponent<EnemyController>() != null)
         {
-            if (!gameObject.GetComponent<PlayerController>().CheckMovement())
+            previousNearestEnemy.GetComponent<EnemyController>().NonDisplayAim();
+        }
+
+        if (playerController != null && nearestEnemy != null)
+        {
+            if (nearestEnemy.GetComponent<EnemyController>() != null)
+            {
+                nearestEnemy.GetComponent<EnemyController>().DisplayAim();
+            }
+            previousNearestEnemy = nearestEnemy;
+            if (!playerController.CheckMovement())
             {
                 Vector3 tempPosition = new Vector3(nearestEnemy.transform.position.x, transform.position.y, nearestEnemy.transform.position.z);
                 transform.LookAt(tempPosition);
-                attackRange.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
+                //attackRange.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
                 if (canAttack && weapon.GetComponentInChildren<Weapon>() != null)
                 {
-                    StartCoroutine(AttackAction(tempPosition));
+                    StartCoroutine(AttackAction(tempPosition + new Vector3(0, -transform.position.y + nearestEnemy.transform.position.y + 0.5f)));
                 }
             }
             else
@@ -194,9 +210,8 @@ public class Attack : MonoBehaviour
             {
                 if (hit.CompareTag("Attackable") && hit.gameObject != gameObject)
                 {
-                    Vector3 tempPosition = new Vector3(hit.transform.position.x, transform.position.y, hit.transform.position.z);
+                    Vector3 tempPosition = new Vector3(hit.transform.position.x, hit.transform.position.y + 0.5f, hit.transform.position.z);
                     transform.LookAt(tempPosition);
-                    attackRange.gameObject.transform.rotation = Quaternion.Euler(0, 0, 0);
 
                     bool enemyAttack = Random.value > 0.2f;
                     if (canAttack && enemyAttack)

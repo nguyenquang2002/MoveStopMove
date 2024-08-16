@@ -7,7 +7,8 @@ public class Spawner : MonoBehaviour
 {
     [SerializeField] int alive = 50, maxEnemyAtOnce = 6;
     [SerializeField] float areaRange = 45f;
-
+    [SerializeField] float timeSpawn = 0.5f;
+    private float timer = 0f;
     [SerializeField] Material[] listSkin;
     private int enemyCount = 0;
 
@@ -28,6 +29,7 @@ public class Spawner : MonoBehaviour
     private void Awake()
     {
         enemyCount = 0;
+        DisplayAlive();
         enemyPool = new ObjectPool<EnemyController>(CreateEnemy, OnGet, OnRelease);
     }
 
@@ -55,17 +57,39 @@ public class Spawner : MonoBehaviour
     private void OnRelease(EnemyController enemy)
     {
         enemyCount--;
-        alive--;
         enemy.gameObject.SetActive(false);
         enemy.ResetOnRelease();
+    }
+
+    private void DisplayAlive()
+    {
+        if (GameObject.Find("Canvas").GetComponent<CanvasInfo>() != null)
+        {
+            GameObject.Find("Canvas").GetComponent<CanvasInfo>().DisplayAliveCount(alive);
+        }
+    }
+
+    public void ReduceAlive()
+    {
+        alive--;
+        DisplayAlive();
+    }
+    public int GetAlive()
+    {
+        return alive;
     }
 
     // Update is called once per frame
     void Update()
     {
-        if(enemyCount < maxEnemyAtOnce && alive - 1 > 0)
+        if(enemyCount < maxEnemyAtOnce && alive - maxEnemyAtOnce > 0)
         {
-            enemyPool.Get();
+            timer += Time.deltaTime;
+            if(timer >= timeSpawn)
+            {
+                enemyPool.Get();
+                timer = 0;
+            }
         }
     }
 }

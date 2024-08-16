@@ -54,7 +54,7 @@ public class Weapon : MonoBehaviour
     private IEnumerator MoveWeapon(Vector3 targetPosition)
     {
         Vector3 tempPos = transform.position;
-        Vector3 target = new Vector3(targetPosition.x, targetPosition.y + 0.4f, targetPosition.z);
+        Vector3 target = new Vector3(targetPosition.x, targetPosition.y + 0.5f, targetPosition.z);
         Vector3 direction = (target - tempPos).normalized;
 
         rb.isKinematic = false;

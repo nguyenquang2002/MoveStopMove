@@ -42,6 +42,10 @@ public class StateController : MonoBehaviour
         {
             gameObject.GetComponent<EnemyController>().CancelPatrol();
         }
+        if (GameObject.Find("Spawner").GetComponent<Spawner>() != null)
+        {
+            GameObject.Find("Spawner").GetComponent<Spawner>().ReduceAlive();
+        }
         yield return new WaitForSeconds(1.0f);
         if(gameObject.GetComponent<EnemyController>() != null )
         {

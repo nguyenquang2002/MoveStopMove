@@ -28,6 +28,7 @@ public class EnemyController : MonoBehaviour
         stateController = GetComponent<StateController>();
         centrePoint = transform;
         nameText.text = gameObject.name;
+        NonDisplayAim();
     }
 
     // Update is called once per frame
@@ -72,6 +73,22 @@ public class EnemyController : MonoBehaviour
             gameObject.GetComponent<Collider>().enabled = true;
         }
         transform.position = randomPoint;
+    }
+
+    public void DisplayAim()
+    {
+        if(transform.Find("Aim").gameObject != null)
+        {
+            transform.Find("Aim").gameObject.SetActive(true);
+        }
+    }
+
+    public void NonDisplayAim()
+    {
+        if (transform.Find("Aim").gameObject != null)
+        {
+            transform.Find("Aim").gameObject.SetActive(false);
+        }
     }
 
     bool RandomPoint(Vector3 center, float range, out Vector3 result)
