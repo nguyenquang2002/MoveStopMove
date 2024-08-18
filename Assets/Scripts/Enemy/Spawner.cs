@@ -82,7 +82,7 @@ public class Spawner : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        if(enemyCount < maxEnemyAtOnce && alive - maxEnemyAtOnce > 0)
+        if(enemyCount < maxEnemyAtOnce && alive - enemyCount - 1 > 0)
         {
             timer += Time.deltaTime;
             if(timer >= timeSpawn)

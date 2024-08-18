@@ -130,7 +130,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   speed: 5
   isRotate: 0
-  isMultiple: 0
+  isMultiple: 1
   rotationSpeed: 540
   weaponParent: {fileID: 0}
   attack: {fileID: 0}
