@@ -19,8 +19,9 @@ public class StateController : MonoBehaviour
     private Rigidbody rb;
     private PlayerController playerController;
     private EnemyController enemyController;
-    private GameManager uiCanvas;
+    private UIController uiCanvas;
     private Spawner spawner;
+    private bool isDefeat = false, isVictory = false;
     [SerializeField] Material deathMaterial;
     private void Awake()
     {
@@ -30,10 +31,10 @@ public class StateController : MonoBehaviour
         playerController = GetComponent<PlayerController>();
         enemyController = GetComponent<EnemyController>();
         spawner = GameObject.Find("Spawner").GetComponent<Spawner>();
-        uiCanvas = GameObject.Find("Canvas").GetComponent<GameManager>();
+        uiCanvas = GameObject.Find("Canvas").GetComponent<UIController>();
     }
 
-    private void Update()
+    private void LateUpdate()
     {
         CheckWinCondition();
     }
@@ -47,8 +48,13 @@ public class StateController : MonoBehaviour
     {
         if(spawner.GetAlive() == 1)
         {
-            if (playerController != null && !playerController.IsDeath())
+            if (playerController != null && !playerController.IsDeath() && !isDefeat)
             {
+                if (attack != null)
+                {
+                    uiCanvas.SetKillCount(attack.killCount);
+                }
+                isVictory = true;
                 uiCanvas.SetVictory();
             }
         }
@@ -88,8 +94,9 @@ public class StateController : MonoBehaviour
             attack.ChangeMaterial(deathMaterial, deathMaterial);
         }
         yield return new WaitForSeconds(1.0f);
-        if (playerController != null)
+        if (playerController != null && !isVictory)
         {
+            isDefeat = true;
             uiCanvas.SetGameOver();
         }
         if(enemyController != null )

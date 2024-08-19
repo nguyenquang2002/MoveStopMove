@@ -63,9 +63,9 @@ public class Spawner : MonoBehaviour
 
     private void DisplayAlive()
     {
-        if (GameObject.Find("Canvas").GetComponent<GameManager>() != null)
+        if (GameObject.Find("Canvas").GetComponent<UIController>() != null)
         {
-            GameObject.Find("Canvas").GetComponent<GameManager>().DisplayAliveCount(alive);
+            GameObject.Find("Canvas").GetComponent<UIController>().DisplayAliveCount(alive);
         }
     }
 

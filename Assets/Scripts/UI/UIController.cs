@@ -3,12 +3,12 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class GameManager : MonoBehaviour
+public class UIController : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI aliveCountText;
     private GameObject endgamePanel;
     private GameObject gameOverBG, victoryBG;
-    private TextMeshProUGUI killerText, rankingText;
+    private TextMeshProUGUI killerText, rankingText,killCountText;
     private void Awake()
     {
         endgamePanel = transform.Find("EndgamePanel").gameObject;
@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
         victoryBG = endgamePanel.transform.Find("VictoryBG").gameObject;
         killerText = gameOverBG.transform.Find("KillerText").GetComponent<TextMeshProUGUI>();
         rankingText = gameOverBG.transform.Find("RankingText").GetComponent<TextMeshProUGUI>();
+        killCountText = victoryBG.transform.Find("KillCountText").GetComponent<TextMeshProUGUI>();
     }
     private void Start()
     {
@@ -52,5 +53,9 @@ public class GameManager : MonoBehaviour
     public void SetRanking(int ranking)
     {
         rankingText.text = "#" + ranking.ToString();
+    }
+    public void SetKillCount(int kill)
+    {
+        killCountText.text = "KILL: " + kill.ToString();
     }
 }

@@ -24,6 +24,7 @@ public class Attack : MonoBehaviour
     public int killCount = 0;
     private CameraFollow cam;
 
+
     private void Awake()
     {
         attackRange = gameObject.GetComponentInChildren<SphereCollider>();
@@ -76,7 +77,7 @@ public class Attack : MonoBehaviour
 
         CheckEnemy();
     }
-
+    
     public void ResetKill()
     {
         gameObject.transform.localScale = oldScale;

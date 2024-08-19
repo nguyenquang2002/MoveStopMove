@@ -35,6 +35,8 @@ public class EnemyController : MonoBehaviour
         {
             baseColor = transform.Find("Skins").GetComponent<SkinnedMeshRenderer>().material.color;
         }
+        IndicatorUI indi = GameObject.Find("Canvas").GetComponent<IndicatorUI>();
+        indi.AddTargetIndicator(this.gameObject);
         NonDisplayAim();
     }
 

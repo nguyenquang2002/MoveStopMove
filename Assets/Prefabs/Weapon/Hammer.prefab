@@ -129,7 +129,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   speed: 5
-  isRotate: 1
+  isRotate: 0
   isMultiple: 0
   rotationSpeed: 540
   weaponParent: {fileID: 0}
