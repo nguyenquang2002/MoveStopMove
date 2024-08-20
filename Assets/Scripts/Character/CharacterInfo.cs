@@ -20,7 +20,7 @@ public class CharacterInfo : MonoBehaviour
 
     void LateUpdate()
     {
-        gameObject.transform.rotation = Quaternion.Euler(0f, 0f, 0f);
+        gameObject.transform.rotation = Quaternion.Euler(50f, 0f, 0f);
         ChangeScale(FindCharacterWithHighestKillCount());
     }
 
