@@ -9,4 +9,16 @@ public class GameManagement : MonoBehaviour
     {
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
+    public void Home()
+    {
+        SceneManager.LoadScene("Home");
+    }
+    public void PlayGame()
+    {
+        SceneManager.LoadScene("Level1");
+    }
+    public void NextLevel()
+    {
+        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex + 1);
+    }
 }
