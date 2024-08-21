@@ -45,6 +45,7 @@ public class PlayerController : MonoBehaviour
     void Movement()
     {
         Vector3 targetVector = new Vector3 (inputX, 0 ,inputZ);
+        rb.velocity = targetVector * speed;
         Vector3 movementVector = MoveTowardTarget(targetVector);
         RotateTowardMovementVector(movementVector);
         stateController.Idle(!CheckMovement());
@@ -64,8 +65,8 @@ public class PlayerController : MonoBehaviour
         float speedMove = speed * Time.deltaTime;
 
         targetVector = Quaternion.Euler(0, cam.gameObject.transform.rotation.eulerAngles.y, 0) * targetVector;
-        Vector3 targetPosition = transform.position + targetVector * speedMove;
-        transform.position = targetPosition;
+        Vector3 targetPosition = transform.position + targetVector * speed * Time.deltaTime;
+        //transform.position = targetPosition;
         return targetVector;
     }
     private void RotateTowardMovementVector(Vector3 movementDirection)
